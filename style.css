@@ -1,0 +1,48 @@
+*{
+    margin: 0px;
+    padding: 0px;
+    box-sizing: border-box;
+}
+
+#form-container{
+    text-align: center; 
+    width:80%;
+    margin: 2rem auto;
+}
+
+#input-container{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    font-size: 1.3rem;
+}
+
+#generate-button{
+    margin-top: 2rem;
+    font-size: 1.3rem;
+}
+
+#game-status{
+    font-size: 1.3rem;
+    margin: 0 0;
+    text-align: center;
+}
+
+#flag-status{
+    display: none;
+    font-size: 1.3rem;
+    margin-top: 1rem;
+    text-align: right;
+}
+
+#game-container{
+    margin: auto;
+}
+
+#game{
+    display:flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center; 
+    text-align: center;
+}

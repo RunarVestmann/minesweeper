@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="img/bomb.png">
+    <title>Minesweeper</title>
+</head>
+<body>
+    <div id="form-container">
+        <div id="input-container">
+            <p>Rows: <input type="number" min="1" max="40" id="rows"></p>
+        
+            <p>Columns: <input type="number" min="1" max="40" id="cols"></p>
+        
+            <p>Mines: <input type="number" min="1" max="1600" id="mines"></p>
+        </div>
+
+        <button id="generate-button" onclick="generateBoard()">Generate Board</button>
+
+    </div>
+
+    <p id="game-status">No Ongoing Game</p>
+    
+
+    <div id="game-container">
+        <p id="flag-status"></p>
+        <div id="game">
+
+        </div>
+    </div>
+    
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="main.js"></script>
+</body>
+</html>
