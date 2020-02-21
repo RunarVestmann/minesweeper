@@ -376,11 +376,11 @@ function generateBoard(){
     cols.value = validatedCols;
     mines.value = validatedMines;
 
-    const board = initializeBoard(validatedRows, validatedCols, validatedMines);
+    const board = initializeBoard(validatedCols, validatedRows, validatedMines);
     renderBoard(board);
 }
 
-function initializeBoard(rows, cols, mines){
+function initializeBoard(cols, rows, mines){
 
     const minePositions = [...Array(mines)].map(element => Array(2));
 
