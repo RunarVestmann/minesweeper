@@ -24,24 +24,6 @@ const darkRed = "#9d2503";
 const green = "#2c786c";
 const blue = "#0f4c75";
 
-const defaultBoard = {
-    rows:10,
-    cols:10,
-    mines:10,
-    minePositions: [
-        [1,3],
-        [3,0],
-        [4,2],
-        [4,5],
-        [4,7],
-        [6,9],
-        [7,7],
-        [8,9],
-        [9,3],
-        [9,9]
-    ]
-}
-
 //A class that represents a unit on the grid
 class Unit{
     
@@ -101,7 +83,7 @@ class Unit{
                 else if(this.neighbourBombs > 2){
                     this.instance.style.color = darkRed;
                 }
-                this.instance.innerHTML = String(this.neighbourBombs);
+                this.instance.textContent = String(this.neighbourBombs);
             }
 
             //No bombs are neighbours, then reveal all the neighbours
@@ -171,7 +153,7 @@ function gameOver(units){
             }
         }
     }
-    gameStatus.innerHTML = "Game Over";
+    gameStatus.textContent = "Game Over";
     donePlaying = true;
 }
 
@@ -208,7 +190,7 @@ function gameWon(units){
             }
         }
     }
-    gameStatus.innerHTML = "You won!";
+    gameStatus.textContent = "You won!";
     donePlaying = true;
 }
 
@@ -267,21 +249,21 @@ function decrementRemainingFlags(){
         flagsLeft = 0;
     }
 
-    flagStatus.innerHTML = "Flags left: " + String(flagsLeft);
+    flagStatus.textContent = "Flags left: " + String(flagsLeft);
 }
 
 function incrementRemainingFlags(){
     flagsLeft++;
-    flagStatus.innerHTML = "Flags left: " + String(flagsLeft);
+    flagStatus.textContent = "Flags left: " + String(flagsLeft);
 }
 
 function resetGame(game, board){
     clearBoard(game);
     donePlaying = false;
-    gameStatus.innerHTML = "Ongoing Game";
+    gameStatus.textContent = "Ongoing Game";
     flagsLeft = board.mines;
     flagStatus.style.display = "block";
-    flagStatus.innerHTML = "Flags left: " + String(flagsLeft);
+    flagStatus.textContent = "Flags left: " + String(flagsLeft);
 }
 
 function checkForBomb(board, y, x){
@@ -394,23 +376,41 @@ function generateBoard(){
     cols.value = validatedCols;
     mines.value = validatedMines;
 
-    //Send the input data to the backend and handle the response
-    axios.post(BACKEND_URL, { rows: validatedRows, cols: validatedCols, mines: validatedMines })
-        .then( (response) => {
-            renderBoard(response.data.board);
-        })
-        .catch( () => {
-            //In case of an error we load a 10x10 board
-            renderBoard(defaultBoard);
+    const board = initializeBoard(validatedRows, validatedCols, validatedMines);
+    renderBoard(board);
+}
 
-            //Let the user know that there occurred an error when talking to the server
-            gameStatus.innerHTML = "Server error, 10x10 grid selected";
+function initializeBoard(rows, cols, mines){
 
-            //Set the text back to normal if the text hasn't changed after 3 seconds
-            setTimeout( () => {
-                if(gameStatus.innerHTML === "Server error, 10x10 grid selected"){
-                    gameStatus.innerHTML = "Ongoing game";
-                }
-            },3000);
-        });
+    const minePositions = [...Array(mines)].map(element => Array(2));
+
+    for(let i = 0; i < mines; i++){
+        placeMine(minePositions, cols, rows, i);
+    }
+
+    return {
+        rows: rows,
+        cols: cols,
+        mines: mines,
+        minePositions: minePositions
+    }
+}
+
+function placeMine(minePositions, cols, rows, index){
+
+    let minePos = [Math.floor(Math.random() * rows), Math.floor(Math.random() * cols)];
+
+    while(arrayInArray(minePositions, minePos)){
+        minePos = [Math.floor(Math.random() * rows), Math.floor(Math.random() * cols)];
+    }
+    minePositions[index] = minePos;
+}
+
+function arrayInArray(array1, array2){
+    for(let i = 0; i < array1.length; i++){
+        if(array1[i][0] === array2[0] && array1[i][1] === array2[1]){
+            return true;  
+        }
+    }
+    return false;
 }
